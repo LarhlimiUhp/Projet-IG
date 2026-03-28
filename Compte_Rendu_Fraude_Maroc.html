@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compte Rendu — Fraude au Maroc 2018–2023</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root {
+    --ink: #0f1923;
+    --ink2: #2c3e50;
+    --muted: #6b7a8d;
+    --light: #f4f6f9;
+    --rule: #dde3ea;
+    --accent: #c0392b;
+    --accent2: #2471a3;
+    --accent3: #1a7a4a;
+    --accent4: #7d3c98;
+    --gold: #b7860b;
+    --page: #fdfcfa;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Source Sans 3', sans-serif;
+    background: var(--page);
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 1.75;
+  }
+
+  /* ── COVER ── */
+  .cover {
+    background: var(--ink);
+    color: white;
+    padding: 80px 60px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 380px; height: 380px;
+    border: 60px solid rgba(192,57,43,0.18);
+    border-radius: 50%;
+  }
+  .cover::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: 20%;
+    width: 220px; height: 220px;
+    border: 40px solid rgba(36,113,163,0.15);
+    border-radius: 50%;
+  }
+  .cover-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 20px;
+  }
+  .cover h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 5vw, 56px);
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+  .cover h1 span { color: var(--accent); }
+  .cover-sub {
+    font-size: 18px;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 40px;
+    font-weight: 300;
+  }
+  .cover-meta {
+    display: flex; gap: 40px; flex-wrap: wrap;
+  }
+  .cover-kpi {
+    display: flex; flex-direction: column;
+  }
+  .cover-kpi-val {
+    font-family: 'Playfair Display', serif;
+    font-size: 30px;
+    font-weight: 700;
+    color: white;
+  }
+  .cover-kpi-label {
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  /* ── LAYOUT ── */
+  .page { max-width: 900px; margin: 0 auto; padding: 60px 40px; }
+
+  /* ── SECTIONS ── */
+  .section { margin-bottom: 64px; }
+  .section-num {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--ink);
+  }
+  .section h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--ink2);
+    margin: 28px 0 12px;
+  }
+  p { margin-bottom: 14px; color: var(--ink2); }
+
+  /* ── CALLOUT ── */
+  .callout {
+    border-left: 4px solid var(--accent);
+    background: #fdf5f5;
+    padding: 16px 20px;
+    border-radius: 0 8px 8px 0;
+    margin: 20px 0;
+    font-style: italic;
+    color: var(--ink2);
+  }
+
+  /* ── TABLES ── */
+  .table-wrap { overflow-x: auto; margin: 20px 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  thead tr { background: var(--ink); color: white; }
+  thead th { padding: 10px 14px; text-align: left; font-weight: 600; font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; }
+  tbody tr:nth-child(even) { background: var(--light); }
+  tbody td { padding: 9px 14px; border-bottom: 1px solid var(--rule); color: var(--ink2); }
+  tbody tr:last-child td { border-bottom: none; font-weight: 600; background: #e8eef5; color: var(--ink); }
+
+  /* ── KPI GRID ── */
+  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin: 24px 0; }
+  .kpi-card {
+    background: white;
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    padding: 18px 16px;
+    position: relative;
+    overflow: hidden;
+  }
+  .kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+  .kpi-card.red::before   { background: var(--accent); }
+  .kpi-card.blue::before  { background: var(--accent2); }
+  .kpi-card.green::before { background: var(--accent3); }
+  .kpi-card.purple::before{ background: var(--accent4); }
+  .kpi-card.gold::before  { background: var(--gold); }
+  .kpi-val {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.1;
+    margin-bottom: 6px;
+  }
+  .kpi-lbl { font-size: 12px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+
+  /* ── CHARTS ── */
+  .chart-section { margin: 32px 0; }
+  .chart-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .chart-subtitle { font-size: 12px; color: var(--muted); margin-bottom: 14px; }
+  .chart-box {
+    background: white;
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    padding: 20px;
+  }
+  .chart-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0; }
+  .chart-row .chart-box { height: 100%; }
+  canvas { display: block; }
+
+  /* ── RECO ── */
+  .reco-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin: 20px 0; }
+  .reco-card {
+    background: white;
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    padding: 20px;
+  }
+  .reco-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    font-weight: 900;
+    color: var(--rule);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .reco-title { font-weight: 600; font-size: 14px; color: var(--ink); margin-bottom: 8px; }
+  .reco-text { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+  /* ── FOOTER ── */
+  .footer {
+    background: var(--ink);
+    color: rgba(255,255,255,0.4);
+    text-align: center;
+    padding: 24px;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+  }
+
+  /* ── PROGRESS BARS ── */
+  .bar-list { display: flex; flex-direction: column; gap: 10px; margin: 16px 0; }
+  .bar-item { display: flex; align-items: center; gap: 10px; font-size: 13px; }
+  .bar-label { min-width: 170px; color: var(--ink2); font-weight: 500; }
+  .bar-track { flex: 1; background: var(--light); border-radius: 4px; height: 8px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 4px; }
+  .bar-val { min-width: 38px; text-align: right; color: var(--muted); font-size: 12px; }
+
+  @media (max-width: 640px) {
+    .chart-row { grid-template-columns: 1fr; }
+    .page { padding: 32px 20px; }
+    .cover { padding: 48px 24px 40px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-label">Rapport analytique confidentiel</div>
+  <h1>Fraude au<br><span>Maroc</span></h1>
+  <div class="cover-sub">Analyse des données 2018–2023 · 1 000 cas recensés</div>
+  <div class="cover-meta">
+    <div class="cover-kpi">
+      <div class="cover-kpi-val">220,3 Mrd</div>
+      <div class="cover-kpi-label">MAD fraudés</div>
+    </div>
+    <div class="cover-kpi">
+      <div class="cover-kpi-val">21,6 %</div>
+      <div class="cover-kpi-label">Taux de recouvrement</div>
+    </div>
+    <div class="cover-kpi">
+      <div class="cover-kpi-val">441 j</div>
+      <div class="cover-kpi-label">Durée moy. enquête</div>
+    </div>
+    <div class="cover-kpi">
+      <div class="cover-kpi-val">32,3 %</div>
+      <div class="cover-kpi-label">Taux d'arrestation</div>
+    </div>
+  </div>
+</div>
+
+<div class="page">
+
+  <!-- 1. RÉSUMÉ -->
+  <div class="section">
+    <div class="section-num">Section 01</div>
+    <h2>Résumé Exécutif</h2>
+    <p>Sur la période 2018–2023, <strong>1 000 cas de fraude</strong> ont été recensés au Maroc, représentant un préjudice financier total de <strong>220,3 milliards MAD</strong>. Seuls <strong>47,6 milliards MAD</strong> ont été récupérés, soit un taux de recouvrement de <strong>21,6 %</strong>, révélant une capacité de recouvrement encore limitée.</p>
+    <p>Le taux d'arrestation reste modeste à <strong>32,3 %</strong> des cas, et la durée moyenne d'une enquête s'établit à <strong>441 jours</strong>. Par ailleurs, <strong>25,8 % des suspects</strong> sont des récidivistes.</p>
+    <div class="callout">La fraude au Maroc se caractérise par une grande diversité typologique, une distribution géographique concentrée dans les grandes agglomérations, et un système judiciaire dont l'efficacité reste à renforcer.</div>
+  </div>
+
+  <!-- 2. KPIs -->
+  <div class="section">
+    <div class="section-num">Section 02</div>
+    <h2>Indicateurs Clés de Performance</h2>
+    <div class="kpi-grid">
+      <div class="kpi-card red"><div class="kpi-val">1 000</div><div class="kpi-lbl">Cas enregistrés</div></div>
+      <div class="kpi-card blue"><div class="kpi-val">220,3 Mrd</div><div class="kpi-lbl">MAD fraudés</div></div>
+      <div class="kpi-card green"><div class="kpi-val">47,6 Mrd</div><div class="kpi-lbl">MAD récupérés</div></div>
+      <div class="kpi-card gold"><div class="kpi-val">21,6 %</div><div class="kpi-lbl">Taux recouvrement</div></div>
+      <div class="kpi-card purple"><div class="kpi-val">441 j</div><div class="kpi-lbl">Durée moy. enquête</div></div>
+      <div class="kpi-card red"><div class="kpi-val">32,3 %</div><div class="kpi-lbl">Taux arrestation</div></div>
+      <div class="kpi-card blue"><div class="kpi-val">25,8 %</div><div class="kpi-lbl">Taux récidive</div></div>
+      <div class="kpi-card green"><div class="kpi-val">2019</div><div class="kpi-lbl">Année pic (191 cas)</div></div>
+    </div>
+  </div>
+
+  <!-- 3. ÉVOLUTION ANNUELLE -->
+  <div class="section">
+    <div class="section-num">Section 03</div>
+    <h2>Évolution Annuelle</h2>
+    <p>L'année <strong>2019</strong> est la plus active avec 191 cas et 41,5 Mrd MAD de préjudice. <strong>2020</strong> enregistre la plus forte baisse (−22 %), possiblement liée aux effets de la pandémie. <strong>2022</strong> marque un rebond significatif (+22,7 %), atteignant le pic des montants fraudés.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Année</th><th>Nb Cas</th><th>Variation</th><th>Montant (Mrd MAD)</th><th>Récupéré (Mrd MAD)</th></tr></thead>
+        <tbody>
+          <tr><td>2018</td><td>167</td><td>—</td><td>36,8</td><td>7,1</td></tr>
+          <tr><td>2019</td><td>191</td><td>+14,4 %</td><td>41,5</td><td>10,2</td></tr>
+          <tr><td>2020</td><td>149</td><td>−22,0 %</td><td>33,3</td><td>8,1</td></tr>
+          <tr><td>2021</td><td>150</td><td>+0,7 %</td><td>34,6</td><td>6,6</td></tr>
+          <tr><td>2022</td><td>184</td><td>+22,7 %</td><td>43,3</td><td>8,4</td></tr>
+          <tr><td>2023</td><td>159</td><td>−13,6 %</td><td>30,8</td><td>7,1</td></tr>
+          <tr><td>Total</td><td>1 000</td><td>—</td><td>220,3</td><td>47,6</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="chart-row">
+      <div>
+        <div class="chart-title">Cas enregistrés par année</div>
+        <div class="chart-subtitle">Nombre de dossiers ouverts, 2018–2023</div>
+        <div class="chart-box"><div style="position:relative;height:240px"><canvas id="cYearCas"></canvas></div></div>
+      </div>
+      <div>
+        <div class="chart-title">Montant fraudé vs récupéré</div>
+        <div class="chart-subtitle">En milliards MAD par année</div>
+        <div class="chart-box"><div style="position:relative;height:240px"><canvas id="cYearMnt"></canvas></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. TYPES DE FRAUDE -->
+  <div class="section">
+    <div class="section-num">Section 04</div>
+    <h2>Analyse par Type de Fraude</h2>
+    <p>La distribution entre les 10 types est <strong>relativement homogène</strong> — aucun ne dépasse 11 % des cas — ce qui traduit une diversification des modes opératoires. La <strong>fraude fiscale</strong> arrive en tête par nombre de cas, mais l'<strong>escroquerie téléphonique</strong> génère le montant le plus élevé.</p>
+
+    <div class="bar-list">
+      <div class="bar-item"><span class="bar-label">Fraude fiscale</span><div class="bar-track"><div class="bar-fill" style="width:100%;background:#c0392b"></div></div><span class="bar-val">110</span></div>
+      <div class="bar-item"><span class="bar-label">Escroquerie téléphonique</span><div class="bar-track"><div class="bar-fill" style="width:99%;background:#c0392b"></div></div><span class="bar-val">109</span></div>
+      <div class="bar-item"><span class="bar-label">Fraude e-commerce</span><div class="bar-track"><div class="bar-fill" style="width:98%;background:#2471a3"></div></div><span class="bar-val">108</span></div>
+      <div class="bar-item"><span class="bar-label">Fraude immobilière</span><div class="bar-track"><div class="bar-fill" style="width:95%;background:#2471a3"></div></div><span class="bar-val">105</span></div>
+      <div class="bar-item"><span class="bar-label">Fraude bancaire</span><div class="bar-track"><div class="bar-fill" style="width:94%;background:#1a7a4a"></div></div><span class="bar-val">104</span></div>
+      <div class="bar-item"><span class="bar-label">Falsification documents</span><div class="bar-track"><div class="bar-fill" style="width:91%;background:#1a7a4a"></div></div><span class="bar-val">100</span></div>
+      <div class="bar-item"><span class="bar-label">Fraude assurance</span><div class="bar-track"><div class="bar-fill" style="width:84%;background:#7d3c98"></div></div><span class="bar-val">93</span></div>
+      <div class="bar-item"><span class="bar-label">Blanchiment d'argent</span><div class="bar-track"><div class="bar-fill" style="width:82%;background:#7d3c98"></div></div><span class="bar-val">91</span></div>
+      <div class="bar-item"><span class="bar-label">Fraude à l'identité</span><div class="bar-track"><div class="bar-fill" style="width:81%;background:#b7860b"></div></div><span class="bar-val">90</span></div>
+      <div class="bar-item"><span class="bar-label">Phishing</span><div class="bar-track"><div class="bar-fill" style="width:81%;background:#b7860b"></div></div><span class="bar-val">90</span></div>
+    </div>
+
+    <div class="chart-section">
+      <div class="chart-title">Montant fraudé par type (Mrd MAD)</div>
+      <div class="chart-subtitle">Classement par impact financier total</div>
+      <div class="chart-box"><div style="position:relative;height:320px"><canvas id="cTypeMnt"></canvas></div></div>
+    </div>
+  </div>
+
+  <!-- 5. SECTEURS -->
+  <div class="section">
+    <div class="section-num">Section 05</div>
+    <h2>Analyse Sectorielle</h2>
+    <p>Les <strong>PME</strong> sont le secteur le plus exposé (16,6 %), suivies du secteur <strong>bancaire</strong> (15,6 %). La relative uniformité sectorielle suggère que la fraude ne cible pas un secteur en particulier mais s'adapte aux opportunités disponibles.</p>
+    <div class="chart-row">
+      <div>
+        <div class="chart-title">Répartition par secteur</div>
+        <div class="chart-subtitle">Part des cas par secteur économique</div>
+        <div class="chart-box"><div style="position:relative;height:280px"><canvas id="cSecteur"></canvas></div></div>
+      </div>
+      <div>
+        <div class="chart-title">Statut des affaires</div>
+        <div class="chart-subtitle">État judiciaire des 1 000 cas</div>
+        <div class="chart-box"><div style="position:relative;height:280px"><canvas id="cStatut"></canvas></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. GÉO -->
+  <div class="section">
+    <div class="section-num">Section 06</div>
+    <h2>Analyse Géographique</h2>
+    <p><strong>Rabat</strong> concentre le plus grand nombre de cas (11,7 %), ce qui s'explique par sa position de capitale et sa densité d'activités financières. La présence d'<strong>Oujda</strong> en deuxième position mérite attention, liée à sa proximité avec la frontière.</p>
+    <div class="chart-section">
+      <div class="chart-title">Top 8 villes les plus touchées</div>
+      <div class="chart-subtitle">Nombre de cas enregistrés par ville</div>
+      <div class="chart-box"><div style="position:relative;height:280px"><canvas id="cVilles"></canvas></div></div>
+    </div>
+  </div>
+
+  <!-- 7. CANAUX -->
+  <div class="section">
+    <div class="section-num">Section 07</div>
+    <h2>Canaux et Moyens de Fraude</h2>
+    <p>La répartition entre les quatre canaux est <strong>quasi-équilibrée</strong>, ce qui confirme que la fraude exploite indifféremment tous les vecteurs de contact. Le <strong>mobile banking</strong> est le moyen de paiement le plus utilisé (187 cas), reflet de la montée en puissance des services financiers mobiles.</p>
+    <div class="chart-row">
+      <div>
+        <div class="chart-title">Canal de fraude</div>
+        <div class="chart-subtitle">Distribution des 1 000 cas par canal</div>
+        <div class="chart-box"><div style="position:relative;height:280px"><canvas id="cCanal"></canvas></div></div>
+      </div>
+      <div>
+        <div class="chart-title">Moyen de paiement utilisé</div>
+        <div class="chart-subtitle">Instruments financiers impliqués</div>
+        <div class="chart-box"><div style="position:relative;height:280px"><canvas id="cPmt"></canvas></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. PROFILS -->
+  <div class="section">
+    <div class="section-num">Section 08</div>
+    <h2>Profil des Victimes et des Suspects</h2>
+    <div class="chart-row">
+      <div>
+        <div class="chart-title">Genre des victimes</div>
+        <div class="chart-subtitle">Répartition hommes / femmes</div>
+        <div class="chart-box"><div style="position:relative;height:220px"><canvas id="cVictime"></canvas></div></div>
+      </div>
+      <div>
+        <div class="chart-title">Genre des suspects</div>
+        <div class="chart-subtitle">Identification des auteurs</div>
+        <div class="chart-box"><div style="position:relative;height:220px"><canvas id="cSuspect"></canvas></div></div>
+      </div>
+    </div>
+    <p style="margin-top:16px">Un tiers des suspects restent <strong>non identifiés</strong> (33,6 %), soulignant les difficultés d'investigation pour les fraudes numériques. La part importante de femmes suspectes (35,8 %) est un résultat atypique méritant une analyse approfondie.</p>
+  </div>
+
+  <!-- 9. SIGNALEMENTS -->
+  <div class="section">
+    <div class="section-num">Section 09</div>
+    <h2>Sources de Signalement</h2>
+    <p>La <strong>dénonciation par des tiers</strong> est la première source de détection (21,7 %), suivie de près par la <strong>victime elle-même</strong> (20,6 %). Le rôle des institutions financières reste important (19,6 %).</p>
+    <div class="chart-section">
+      <div class="chart-title">Qui signale la fraude ?</div>
+      <div class="chart-subtitle">Source de détection par canal de signalement</div>
+      <div class="chart-box"><div style="position:relative;height:220px"><canvas id="cSignale"></canvas></div></div>
+    </div>
+  </div>
+
+  <!-- 10. RECOMMANDATIONS -->
+  <div class="section">
+    <div class="section-num">Section 10</div>
+    <h2>Recommandations</h2>
+    <div class="reco-grid">
+      <div class="reco-card">
+        <div class="reco-num">01</div>
+        <div class="reco-title">Renforcer le recouvrement</div>
+        <div class="reco-text">Mécanismes de saisie préventive des avoirs dès le déclenchement des enquêtes. Coopération judiciaire internationale pour les flux crypto.</div>
+      </div>
+      <div class="reco-card">
+        <div class="reco-num">02</div>
+        <div class="reco-title">Réduire la durée des enquêtes</div>
+        <div class="reco-text">441 jours est trop élevé. Investir dans des outils d'analyse forensique numérique et spécialiser les unités d'enquête.</div>
+      </div>
+      <div class="reco-card">
+        <div class="reco-num">03</div>
+        <div class="reco-title">Lutter contre la récidive</div>
+        <div class="reco-text">Programme de suivi post-condamnation et fichier national des auteurs de fraude pour les 25,8 % de récidivistes.</div>
+      </div>
+      <div class="reco-card">
+        <div class="reco-num">04</div>
+        <div class="reco-title">Cybersécurité financière</div>
+        <div class="reco-text">Renforcer les protocoles d'authentification mobile et les partenariats avec les opérateurs de services financiers numériques.</div>
+      </div>
+      <div class="reco-card">
+        <div class="reco-num">05</div>
+        <div class="reco-title">Améliorer le taux d'arrestation</div>
+        <div class="reco-text">Meilleure coopération interservices (police, banques, douanes) et exploitation des données numériques pour identifier les suspects.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 11. CONCLUSION -->
+  <div class="section">
+    <div class="section-num">Section 11</div>
+    <h2>Conclusion</h2>
+    <p>La fraude au Maroc sur la période 2018–2023 présente un <strong>profil polymorphe et omnicanal</strong>, touchant l'ensemble des secteurs économiques et des catégories socio-démographiques. Si certaines tendances encourageantes apparaissent — baisse en 2023, implication croissante des banques dans le signalement — les indicateurs d'efficacité judiciaire et de recouvrement restent en deçà des standards internationaux.</p>
+    <p>Une <strong>stratégie nationale anti-fraude intégrée</strong>, combinant prévention, investigation rapide et coopération public-privé, apparaît indispensable pour inverser durablement ces tendances.</p>
+    <div class="callout">Seulement 21,7 % des affaires sont résolues et 18,9 % ont abouti à un jugement. À l'inverse, 38,7 % des cas sont soit classés sans suite, soit prescrits — indiquant une perte significative de capacité répressive.</div>
+  </div>
+
+</div>
+
+<div class="footer">
+  Compte rendu généré à partir de Fraude.xlsx — 1 000 observations · 24 variables · Période 2018–2023
+</div>
+
+<script>
+const COLORS = {
+  red:    '#c0392b', red2:   '#e8a09a',
+  blue:   '#2471a3', blue2:  '#aed6f1',
+  green:  '#1a7a4a', green2: '#a9dfbf',
+  purple: '#7d3c98', purple2:'#d2b4de',
+  gold:   '#b7860b', gold2:  '#f9e79f',
+  gray:   '#6b7a8d', gray2:  '#d5d8dc',
+  ink:    '#0f1923',
+};
+
+const gridColor = 'rgba(0,0,0,0.06)';
+const tickColor = '#6b7a8d';
+
+const baseOpts = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: { legend: { display: false } },
+  scales: {
+    x: { grid: { color: gridColor }, ticks: { color: tickColor, font: { size: 11 } } },
+    y: { grid: { color: gridColor }, ticks: { color: tickColor, font: { size: 11 } } }
+  }
+};
+
+// Chart 1 — Cas par année
+new Chart(document.getElementById('cYearCas'), {
+  type: 'bar',
+  data: {
+    labels: ['2018','2019','2020','2021','2022','2023'],
+    datasets: [{
+      data: [167, 191, 149, 150, 184, 159],
+      backgroundColor: ['#2471a3','#c0392b','#1a7a4a','#1a7a4a','#c0392b','#2471a3'],
+      borderRadius: 5
+    }]
+  },
+  options: { ...baseOpts }
+});
+
+// Chart 2 — Montant vs récupéré
+new Chart(document.getElementById('cYearMnt'), {
+  type: 'bar',
+  data: {
+    labels: ['2018','2019','2020','2021','2022','2023'],
+    datasets: [
+      { label: 'Fraudé', data: [36.8,41.5,33.3,34.6,43.3,30.8], backgroundColor: COLORS.red, borderRadius: 4 },
+      { label: 'Récupéré', data: [7.1,10.2,8.1,6.6,8.4,7.1], backgroundColor: COLORS.green, borderRadius: 4 }
+    ]
+  },
+  options: {
+    ...baseOpts,
+    plugins: {
+      legend: {
+        display: true,
+        position: 'top',
+        labels: { boxWidth: 10, padding: 12, font: { size: 11 }, color: tickColor }
+      }
+    }
+  }
+});
+
+// Chart 3 — Types montant
+new Chart(document.getElementById('cTypeMnt'), {
+  type: 'bar',
+  data: {
+    labels: ['Escroquerie tél.','Falsification doc.','Fraude fiscale','Fraude e-commerce','Fraude immob.','Fraude bancaire',"Blanchiment","Fraude assurance",'Phishing','Fraude identité'],
+    datasets: [{
+      data: [24.8, 24.7, 24.4, 23.7, 23.4, 22.8, 21.0, 19.0, 18.4, 18.0],
+      backgroundColor: [COLORS.red,COLORS.red,COLORS.blue,COLORS.blue,COLORS.green,COLORS.green,COLORS.purple,COLORS.purple,COLORS.gold,COLORS.gold],
+      borderRadius: 4
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { grid: { color: gridColor }, ticks: { color: tickColor, font:{size:11}, callback: v => v+' Mrd' } },
+      y: { grid: { display: false }, ticks: { color: tickColor, font:{size:11} } }
+    }
+  }
+});
+
+// Chart 4 — Secteurs
+new Chart(document.getElementById('cSecteur'), {
+  type: 'doughnut',
+  data: {
+    labels: ['PME','Banque','Commerce en ligne','Télécoms','Assurance','Admin. publique','Immobilier'],
+    datasets: [{
+      data: [166,156,143,138,136,134,127],
+      backgroundColor: [COLORS.red,COLORS.blue,COLORS.green,COLORS.purple,COLORS.gold,COLORS.gray,'#1a5276'],
+      borderWidth: 2, borderColor: '#fff', hoverOffset: 6
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position:'bottom', labels:{ boxWidth:10, padding:8, font:{size:11}, color:tickColor } } },
+    cutout: '55%'
+  }
+});
+
+// Chart 5 — Statut
+new Chart(document.getElementById('cStatut'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Résolu','Classé s/s suite','En enquête','Jugé','Prescrit'],
+    datasets: [{
+      data: [217,207,207,189,180],
+      backgroundColor: [COLORS.green,COLORS.gray,COLORS.blue,COLORS.purple,COLORS.gold],
+      borderWidth: 2, borderColor: '#fff', hoverOffset: 6
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position:'bottom', labels:{ boxWidth:10, padding:8, font:{size:11}, color:tickColor } } },
+    cutout: '55%'
+  }
+});
+
+// Chart 6 — Villes
+new Chart(document.getElementById('cVilles'), {
+  type: 'bar',
+  data: {
+    labels: ['Rabat','Oujda','Marrakech','Fès','Kenitra','Tétouan','Agadir','Meknès'],
+    datasets: [{
+      data: [117,108,106,105,103,98,95,95],
+      backgroundColor: ['#c0392b','#2471a3','#2471a3','#1a7a4a','#1a7a4a','#7d3c98','#7d3c98','#b7860b'],
+      borderRadius: 5
+    }]
+  },
+  options: { ...baseOpts }
+});
+
+// Chart 7 — Canal
+new Chart(document.getElementById('cCanal'), {
+  type: 'polarArea',
+  data: {
+    labels: ['En ligne','Téléphone','Physique','Mixte'],
+    datasets: [{
+      data: [259,259,257,225],
+      backgroundColor: [COLORS.blue+'cc',COLORS.red+'cc',COLORS.green+'cc',COLORS.gold+'cc'],
+      borderWidth: 0
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position:'bottom', labels:{ boxWidth:10, padding:10, font:{size:11}, color:tickColor } } },
+    scales: { r: { grid: { color: gridColor }, ticks: { display: false } } }
+  }
+});
+
+// Chart 8 — Paiement
+new Chart(document.getElementById('cPmt'), {
+  type: 'bar',
+  data: {
+    labels: ['Mobile banking','Espèces','Carte bancaire','Virement','Chèque falsifié','Crypto'],
+    datasets: [{
+      data: [187,172,164,163,162,152],
+      backgroundColor: [COLORS.blue,COLORS.gray,COLORS.green,COLORS.purple,COLORS.gold,COLORS.red],
+      borderRadius: 4
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { grid: { color: gridColor }, ticks: { color: tickColor, font:{size:11} } },
+      y: { grid: { display: false }, ticks: { color: tickColor, font:{size:11} } }
+    }
+  }
+});
+
+// Chart 9 — Victime genre
+new Chart(document.getElementById('cVictime'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Femme','Homme'],
+    datasets: [{
+      data: [511,489],
+      backgroundColor: [COLORS.red, COLORS.blue],
+      borderWidth: 2, borderColor: '#fff', hoverOffset: 6
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position:'bottom', labels:{ boxWidth:10, padding:10, font:{size:11}, color:tickColor } } },
+    cutout: '55%'
+  }
+});
+
+// Chart 10 — Suspect genre
+new Chart(document.getElementById('cSuspect'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Femme','Inconnu','Homme'],
+    datasets: [{
+      data: [358,336,306],
+      backgroundColor: [COLORS.red, COLORS.gray, COLORS.blue],
+      borderWidth: 2, borderColor: '#fff', hoverOffset: 6
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position:'bottom', labels:{ boxWidth:10, padding:10, font:{size:11}, color:tickColor } } },
+    cutout: '55%'
+  }
+});
+
+// Chart 11 — Signalement
+new Chart(document.getElementById('cSignale'), {
+  type: 'bar',
+  data: {
+    labels: ['Tiers','Victime','Police','Banque'],
+    datasets: [{
+      data: [217,206,198,196],
+      backgroundColor: [COLORS.purple,COLORS.red,COLORS.blue,COLORS.green],
+      borderRadius: 6
+    }]
+  },
+  options: { ...baseOpts }
+});
+</script>
+</body>
+</html>
