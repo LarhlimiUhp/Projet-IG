@@ -1,6 +1,9 @@
 # Compte Rendu — Analyse de la Fraude au Maroc
 ## Période : 2018–2023
 
+
+
+## Période : A . Larhlimi
 ---
 
 **Document produit à partir de :** `Fraude.xlsx` — 1 000 cas enregistrés  
